@@ -12,7 +12,8 @@ void compressString(char *str) {
 
         if (*p == curr_char) {
             count++;
-        } else {
+        }
+        else {
             if (count > 1) {
                 *q++ = count + '0';
             }
