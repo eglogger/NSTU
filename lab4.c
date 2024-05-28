@@ -27,6 +27,7 @@ void append(struct Node** head_ref, int new_data) {
 }
 
 void printList(struct Node* node) {
+    
     while (node != NULL) {
         printf("%d ", node->data);
         node = node->next;
@@ -35,26 +36,33 @@ void printList(struct Node* node) {
 }
 
 struct Node* mergeLists(struct Node* list1, struct Node* list2) {
+    
     struct Node* result = NULL;
     struct Node** tail = &result;
 
     while (list1 != NULL || list2 != NULL) {
+        
         if (list1 != NULL && list2 != NULL) {
+            
             if (list1->data < list2->data) {
                 *tail = list1;
                 list1 = list1->next;
-            } else if (list2->data < list1->data) {
+            } 
+            else if (list2->data < list1->data) {
                 *tail = list2;
                 list2 = list2->next;
-            } else { // Если элементы равны, добавляем только один из них
+            } 
+            else {
                 *tail = list1;
                 list1 = list1->next;
                 list2 = list2->next;
             }
-        } else if (list1 != NULL) {
+        } 
+        else if (list1 != NULL) {
             *tail = list1;
             list1 = list1->next;
-        } else {
+        } 
+        else {
             *tail = list2;
             list2 = list2->next;
         }
@@ -88,6 +96,7 @@ int main() {
     printList(mergedList);
 
     struct Node* temp;
+    
     while (mergedList != NULL) {
         temp = mergedList;
         mergedList = mergedList->next;
