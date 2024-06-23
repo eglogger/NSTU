@@ -1,62 +1,38 @@
 #include <stdio.h>
-#include <string.h>
 
-#define MAX_DATA_SIZE 100
-#define MAX_BUFFER_SIZE 10
+long divide(long dividend, long divisor) {
 
-void enterData(char* data) {
+    long quotient = 0;
 
-    int counter = 0;
-    char buffer[MAX_BUFFER_SIZE];
+    int sign = ((dividend < 0) || (divisor < 0)) ? -1 : 1;
 
-    while (1) {
+    long abs_dividend = dividend < 0 ? -dividend : dividend;
+    long abs_divisor = divisor < 0 ? -divisor : divisor;
 
-        fgets(buffer, MAX_BUFFER_SIZE, stdin);
+    while (abs_dividend >= abs_divisor) {
 
-        if (buffer[0] == '\n')
-            break;
-
-        int len = strlen(buffer) - 1;
-
-        if (counter + len + 1 < MAX_DATA_SIZE) {
-
-            data[counter++] = len;
-            strncpy(&data[counter], buffer, len);
-            counter += len;
-        }
-
-        else {
-
-            printf("Data array is full!\n");
-            break;
-        }
+        abs_dividend -= abs_divisor;
+        quotient++;
     }
 
-    data[counter] = 0;
-}
-
-void displayData(char* data) {
-
-    int counter = 0;
-
-    while (data[counter] != 0) {
-
-        int len = data[counter++];
-
-        for (int i = 0; i < len; i++) {
-            putchar(data[counter++]);
-        }
-
-        putchar('\n');
-    }
+    return sign * quotient;
 }
 
 int main() {
 
-    char dataArray[MAX_DATA_SIZE];
+    long dividend, divisor;
 
-    enterData(dataArray);
-    displayData(dataArray);
+    scanf("%ld", &dividend);
+    scanf("%ld", &divisor);
+
+    if (divisor == 0) {
+        printf("Division by zero!\n");
+    }
+
+    else {
+        long result = divide(dividend, divisor);
+        printf("%ld", result);
+    }
 
     return 0;
 }
