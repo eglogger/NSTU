@@ -8,7 +8,7 @@ using namespace std;
 
 void testAdd() {
 
-    cout << "--- Test add. ---" << endl;
+    cout << "--- add test ---" << endl;
 
     Array arr(3);
 
@@ -22,23 +22,23 @@ void testAdd() {
 
 void testGet() {
 
-    cout << "--- Test get. ---" << endl;
+    cout << "--- get test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
     arr.add(30);
     arr.add(40);
 
-    arr.print();
+    cout << arr.get(0) << endl;
 }
 
 void testSetGetCurr() {
 
-    cout << "--- Test setCurrentIndex/getCurrentElement. ---" << endl;
+    cout << "--- setCurrentIndex/getCurrentElement test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
@@ -52,14 +52,17 @@ void testSetGetCurr() {
 
 void testNextPrev() {
 
-    cout << "--- Test Next and Prev. ---" << endl;
+    cout << "--- next/prev test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
     arr.add(30);
     arr.add(40);
+
+    cout << "Current Element: " << arr.getCurrentElement() << " Index: "
+         << arr.getCurrentIndex() << endl;
 
     arr.next();
     cout << "Current Element: " << arr.getCurrentElement() << " Index: "
@@ -72,9 +75,9 @@ void testNextPrev() {
 
 void testSearch() {
 
-    cout << "--- Test search. ---" << endl;
+    cout << "--- search test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
@@ -88,9 +91,9 @@ void testSearch() {
 
 void testSet() {
 
-    cout << "--- Test set. ---" << endl;
+    cout << "--- set test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
@@ -104,9 +107,9 @@ void testSet() {
 
 void testRemove() {
 
-    cout << "--- Test remove. ---" << endl;
+    cout << "--- remove test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
@@ -120,9 +123,9 @@ void testRemove() {
 
 void testGetCurrSize() {
 
-    cout << "--- Test remove. ---" << endl;
+    cout << "--- getCurrentSize test ---" << endl;
 
-    Array arr(3);
+    Array arr(4);
 
     arr.add(10);
     arr.add(20);
@@ -133,7 +136,90 @@ void testGetCurrSize() {
     cout << arr.getCurrentSize() << endl;
 }
 
-void
+void testNewConstructor() {
+
+    cout << "--- New Constructor test ---" << endl;
+
+    Array arr1(5, 5, 50, 40, 30, 20, 10);
+    arr1.print();
+}
+
+void testCopyConstructor() {
+
+    cout << "--- Copy Constructor test ---" << endl;
+
+    Array arr1(5, 5, 50, 40, 30, 20, 10);
+    Array arr(arr1);
+
+    arr1.print();
+    arr.print();
+}
+
+void testOperatorAddSub() {
+
+    cout << "--- Addition/subtraction operations test ---" << endl;
+
+    Array arr(4);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
+    arr.add(40);
+
+    Array arr1(3, 3, 30, 20, 10);
+
+    arr.print();
+    arr1.print();
+
+    arr = arr + arr1;
+    arr.print();
+
+    arr = arr - arr1;
+    arr.print();
+}
+
+void testOperatorDec() {
+
+    cout << "--- Decrement operation test ---" << endl;
+
+    Array arr(4);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
+    arr.add(40);
+    arr.print();
+
+    --arr;
+    arr.print();
+}
+
+void testOperatorDeduction() {
+
+    cout << "--- Deduction operation test ---" << endl;
+
+    Array arr(4);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
+    arr.add(40);
+    arr.print();
+
+    arr-(30);
+    arr.print();
+}
+
+void testOperatorIndexing() {
+
+    cout << "--- Indexing operation test ---" << endl;
+
+    Array arr(4);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
+    arr.add(40);
+    arr.print();
+
+    cout << arr[1] << endl;
+}
 
 
 #endif //CLASS_TESTS_H

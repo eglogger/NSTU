@@ -119,7 +119,7 @@ public:
 
     int get(int index) const {
 
-        if ((index > 0) && (index <= curr_size)) {
+        if ((index >= 0) && (index <= curr_size)) {
             return arr[index];
         }
 
@@ -216,10 +216,10 @@ public:
 
     Array operator+(const Array& other) {
 
-        int new_size = max_size < other.max_size ? max_size : other.max_size;
+        int new_size = max(curr_size, other.curr_size);
         Array result(new_size);
 
-        for (int i = 0; i < std::min(curr_size, other.curr_size); ++i) {
+        for (int i = 0; i < min(curr_size, other.curr_size); ++i) {
             result.arr[i] = arr[i] + other.arr[i];
         }
 
@@ -227,11 +227,11 @@ public:
             for (int i = other.curr_size; i < curr_size; ++i) {
                 result.arr[i] = arr[i];
             }
-
         }
+
         else {
             for (int i = curr_size; i < other.curr_size; ++i) {
-                result.arr[i] = other.arr[i];
+                result.arr[i] = other.arr[i];  // Остаток из второго массива
             }
         }
 
@@ -241,11 +241,23 @@ public:
 
     Array operator-(const Array& other) {
 
-        int new_size = max_size < other.max_size ? max_size : other.max_size;
+        int new_size = max(curr_size, other.curr_size);
         Array result(new_size);
 
-        for (int i = 0; i < new_size; ++i) {
-            result.arr[i] = this->arr[i] - other.arr[i];
+        for (int i = 0; i < min(curr_size, other.curr_size); ++i) {
+            result.arr[i] = arr[i] - other.arr[i];
+        }
+
+        if (curr_size > other.curr_size) {
+            for (int i = other.curr_size; i < curr_size; ++i) {
+                result.arr[i] = arr[i];
+            }
+        }
+
+        else {
+            for (int i = curr_size; i < other.curr_size; ++i) {
+                result.arr[i] = -other.arr[i];
+            }
         }
 
         result.curr_size = new_size;
@@ -305,8 +317,6 @@ public:
         return *this;
     }
 
-
-
 private:
 
     int* arr;
@@ -327,7 +337,6 @@ private:
         arr = new_arr;
         max_size = new_size;
     }
-
 };
 
 
