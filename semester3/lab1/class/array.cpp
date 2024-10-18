@@ -20,6 +20,7 @@ int main() {
     testOperatorDec();
     testOperatorDeduction();
     testOperatorIndexing();
+    testAreEqual();
 
     return 0;
 }

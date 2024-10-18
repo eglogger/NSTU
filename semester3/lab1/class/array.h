@@ -11,6 +11,9 @@ using namespace std;
 
 class Array {
 
+    friend bool areEqual(const Array& arr1, const Array& arr2);
+    friend Array operator+(const Array& arr1, const Array& arr2);
+
 public:
 
     Array(int size) {
@@ -21,6 +24,7 @@ public:
 
         curr_size = 0;
         curr_index = 0;
+        count++;
     }
 
     Array(const Array& other) {
@@ -35,6 +39,7 @@ public:
 
             arr[i] = other.arr[i];
         }
+        count++;
     }
 
     Array(int size, int count, ...) {
@@ -58,6 +63,7 @@ public:
             }
 
             va_end(arg);
+            this->count++;
         }
     }
 
@@ -129,23 +135,30 @@ public:
         }
     }
 
-    string print() {
-
-        ostringstream output;
+    char* toString() {
 
         if (curr_size == 0) {
-            output << "Array is empty!";
+            char* emptyMessage = new char[16];
+            strcpy(emptyMessage, "Array is empty!");
+            return emptyMessage;
         }
 
-        else {
-            for (int i = 0; i < curr_size; i++) {
-                output << arr[i] << " ";
-            }
+        int charCount = 0;
+
+        for (int i = 0; i < curr_size; i++) {
+            charCount += snprintf(nullptr, 0, "%d ", arr[i]);
         }
 
-        cout << output.str() << endl;
+        char* output = new char[charCount + 1];
+        output[0] = '\0';
 
-        return output.str();
+        for (int i = 0; i < curr_size; i++) {
+            char buffer[12];
+            snprintf(buffer, sizeof(buffer), "%d ", arr[i]);
+            strcat(output, buffer);
+        }
+
+        return output;
     }
 
     int getCurrentSize() const {
@@ -214,31 +227,6 @@ public:
         }
     }
 
-    Array operator+(const Array& other) {
-
-        int new_size = max(curr_size, other.curr_size);
-        Array result(new_size);
-
-        for (int i = 0; i < min(curr_size, other.curr_size); ++i) {
-            result.arr[i] = arr[i] + other.arr[i];
-        }
-
-        if (curr_size > other.curr_size) {
-            for (int i = other.curr_size; i < curr_size; ++i) {
-                result.arr[i] = arr[i];
-            }
-        }
-
-        else {
-            for (int i = curr_size; i < other.curr_size; ++i) {
-                result.arr[i] = other.arr[i];  // Остаток из второго массива
-            }
-        }
-
-        result.curr_size = new_size;
-        return result;
-    }
-
     Array operator-(const Array& other) {
 
         int new_size = max(curr_size, other.curr_size);
@@ -256,7 +244,7 @@ public:
 
         else {
             for (int i = curr_size; i < other.curr_size; ++i) {
-                result.arr[i] = -other.arr[i];
+                result.arr[i] = other.arr[i];
             }
         }
 
@@ -323,6 +311,7 @@ private:
     int max_size;
     int curr_size;
     int curr_index;
+    static int count;
 
     void resize() {
 
@@ -339,5 +328,46 @@ private:
     }
 };
 
+bool areEqual(const Array& arr1, const Array& arr2) {
+
+    if (arr1.curr_size != arr2.curr_size) {
+        return false;
+    }
+
+    for (int i = 0; i < arr1.curr_size; i++) {
+        if (arr1.arr[i] != arr2.arr[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+Array operator+(const Array& arr1, const Array& arr2) {
+
+    int new_size = max(arr1.curr_size, arr2.curr_size);
+    Array result(new_size);
+
+    for (int i = 0; i < min(arr1.curr_size, arr2.curr_size); ++i) {
+        result.arr[i] = arr1.arr[i] + arr2.arr[i];
+    }
+
+    if (arr1.curr_size > arr2.curr_size) {
+        for (int i = arr2.curr_size; i < arr1.curr_size; ++i) {
+            result.arr[i] = arr1.arr[i];
+        }
+    }
+
+    else {
+        for (int i = arr1.curr_size; i < arr2.curr_size; ++i) {
+            result.arr[i] = arr2.arr[i];
+        }
+    }
+
+    result.curr_size = new_size;
+    return result;
+}
+
+int Array::count = 0;
 
 #endif //CLASS_CLASS_H
