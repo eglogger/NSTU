@@ -1,0 +1,9 @@
+# ninja log v6
+2	98	7509507614628186	CMakeFiles/arrayclass.dir/main.cpp.obj	9868a039e4cc103a
+8	521	7509507614688360	CMakeFiles/arrayclass.dir/array.cpp.obj	f1322fb24c7156bc
+13	531	7509507614739082	CMakeFiles/arrayclass.dir/tests.cpp.obj	d46fb443a14ca493
+531	668	7509507619917074	arrayclass.exe	b15843b75be2c6fc
+16	91	7509511167309621	CMakeFiles/arrayclass.dir/main.cpp.obj	9868a039e4cc103a
+25	470	7509511167395754	CMakeFiles/arrayclass.dir/tests.cpp.obj	d46fb443a14ca493
+21	478	7509511167355857	CMakeFiles/arrayclass.dir/array.cpp.obj	f1322fb24c7156bc
+478	579	7509511171926952	arrayclass.exe	b15843b75be2c6fc
