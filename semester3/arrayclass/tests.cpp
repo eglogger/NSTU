@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstring>
-#include "array.h"
 #include "tests.h"
+#include "array.h"
+#include "smartarray.h"
+#include "queuearray.h"
 
 
 void testAdd() {
@@ -354,5 +356,173 @@ void testAreEqual() {
 
     else {
         std::cout << "Test failed!" << std::endl;
+    }
+}
+
+void testOperatorInputOutput() {
+
+    std::cout << "--- Test for overloaded input/output operators ---" << std::endl;
+
+    Array arr(5);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
+    arr.add(40);
+    arr.add(50);
+
+    std::cout << "Original Array: " << arr << std::endl;
+
+    const char* textFilename = "test_array.txt";
+    arr.writeToTextFile(textFilename);
+
+    Array arrFromTextFile(5);
+    arrFromTextFile.readFromTextFile(textFilename);
+
+    std::cout << "Array loaded from text file: " << arrFromTextFile << std::endl;
+
+    if (arr.getCurrentSize() == arrFromTextFile.getCurrentSize()) {
+
+        bool isEqual = true;
+
+        for (int i = 0; i < arr.getCurrentSize(); ++i) {
+
+            if (arr.get(i) != arrFromTextFile.get(i)) {
+                isEqual = false;
+                break;
+            }
+        }
+        std::cout << (isEqual ? "Text file test OK!" : "Text file test failed!") << std::endl;
+    }
+
+    else {
+        std::cout << "Text file test failed!" << std::endl;
+    }
+
+    const char* binaryFilename = "test_array.dat";
+    arr.writeToBinaryFile(binaryFilename);
+
+    Array arrFromBinaryFile(5);
+    arrFromBinaryFile.readFromBinaryFile(binaryFilename);
+
+    std::cout << "Array loaded from binary file: " << arrFromBinaryFile << std::endl;
+
+    if (arr.getCurrentSize() == arrFromBinaryFile.getCurrentSize()) {
+
+        bool isEqual = true;
+
+        for (int i = 0; i < arr.getCurrentSize(); ++i) {
+
+            if (arr.get(i) != arrFromBinaryFile.get(i)) {
+                isEqual = false;
+                break;
+            }
+        }
+        std::cout << (isEqual ? "Binary file test OK!" : "Binary file test failed!") << std::endl;
+    }
+
+    else {
+        std::cout << "Binary file test failed!" << std::endl;
+    }
+}
+
+
+void testSmartArrayBoundsChecking() {
+
+    std::cout << "--- SmartArray bounds checking test ---" << std::endl;
+    SmartArray sa(3);
+
+    sa.add(10);
+    sa.add(20);
+    sa.add(30);
+
+    if (sa.get(2) == 30) {
+        std::cout << "Valid index test OK!" << std::endl;
+    }
+
+    else {
+        std::cout << "Valid index test failed!" << std::endl;
+    }
+
+    try {
+        sa.get(5);
+        std::cout << "Bounds checking test failed!" << std::endl;
+    }
+
+    catch (const std::out_of_range& e) {
+        std::cout << "Bounds checking test OK!" << std::endl;
+    }
+}
+
+void testSmartArrayResize() {
+
+    std::cout << "--- SmartArray resize test ---" << std::endl;
+    SmartArray sa(2);
+
+    sa.add(1);
+    sa.add(2);
+
+    try {
+        sa.add(3);
+        std::cout << "Resize test failed!" << std::endl;
+    }
+
+    catch (const std::overflow_error& e) {
+        std::cout << "Resize test OK!" << std::endl;
+    }
+}
+
+void testQueueArrayEnqueueDequeue() {
+
+    std::cout << "--- QueueArray enqueue/dequeue test ---" << std::endl;
+    QueueArray qa(3);
+
+    qa.enqueue(10);
+    qa.enqueue(20);
+    qa.enqueue(30);
+
+    if (qa.dequeue() == 10 && qa.dequeue() == 20 && qa.dequeue() == 30) {
+        std::cout << "Enqueue/dequeue test OK!" << std::endl;
+    }
+
+    else {
+        std::cout << "Enqueue/dequeue test failed!" << std::endl;
+    }
+}
+
+void testQueueArrayUnderflow() {
+
+    std::cout << "--- QueueArray underflow test ---" << std::endl;
+    QueueArray qa(3);
+
+    try {
+        qa.dequeue();
+        std::cout << "Underflow test failed!" << std::endl;
+    }
+
+    catch (const std::underflow_error& e) {
+        std::cout << "Underflow test OK!" << std::endl;
+    }
+}
+
+void testQueueArrayCircularBehavior() {
+
+    std::cout << "--- QueueArray circular behavior test ---" << std::endl;
+    QueueArray qa(3);
+
+    qa.enqueue(1);
+    qa.enqueue(2);
+    qa.enqueue(3);
+    qa.dequeue();
+    qa.enqueue(4);
+
+    char check[50];
+    snprintf(check, sizeof(check), "%s", qa.toString());
+
+    if (strcmp(check, "2 3 4 ") == 0) {
+        std::cout << "Circular behavior test OK!" << std::endl;
+    }
+
+    else {
+        std::cout << "Circular behavior test failed!" << std::endl;
     }
 }

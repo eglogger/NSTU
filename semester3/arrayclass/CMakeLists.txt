@@ -7,4 +7,8 @@ add_executable(arrayclass main.cpp
         array.cpp
         array.h
         tests.cpp
-        tests.h)
+        tests.h
+        queuearray.cpp
+        queuearray.h
+        smartarray.cpp
+        smartarray.h)

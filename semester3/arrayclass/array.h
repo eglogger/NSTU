@@ -16,12 +16,14 @@ public:
     Array(int size, int count, ...);
     ~Array();
 
-    void add(int elem);
-    void set(int index, int new_elem);
+    virtual void add(int elem);
+    virtual int get(int index) const;
+    virtual void set(int index, int new_elem);
     void remove(int index);
     int search(int elem) const;
-    int get(int index) const;
+
     char* toString();
+    int getMaxSize() const;
     int getCurrentSize() const;
     int getCurrentElement() const;
     int getCurrentIndex() const;
@@ -35,6 +37,14 @@ public:
     Array& operator-(int value);
     Array& operator=(const Array& other);
 
+    friend std::ostream& operator<<(std::ostream& os, const Array& array);
+    friend std::istream& operator>>(std::istream& is, Array& array);
+
+    void writeToTextFile(const char *filename) const;
+    void readFromTextFile(const char *filename);
+    void writeToBinaryFile(const char *filename) const;
+    void readFromBinaryFile(const char *filename);
+
 private:
 
     int* arr;
@@ -44,6 +54,7 @@ private:
     static int count;
 
     void resize();
+
 };
 
 bool areEqual(const Array& arr1, const Array& arr2);

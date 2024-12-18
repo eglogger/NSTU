@@ -2,6 +2,7 @@
 #include <cstdarg>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 
 
 int Array::count = 0;
@@ -60,6 +61,11 @@ Array::~Array() {
 
     std::cout << "Array destructed." << std::endl;
     delete[] arr;
+}
+
+int Array::getMaxSize() const {
+
+    return max_size;
 }
 
 void Array::add(int elem) {
@@ -228,12 +234,14 @@ Array Array::operator-(const Array& other) {
     }
 
     if (curr_size > other.curr_size) {
+
         for (int i = other.curr_size; i < curr_size; ++i) {
             result.arr[i] = arr[i];
         }
     }
 
     else {
+
         for (int i = curr_size; i < other.curr_size; ++i) {
             result.arr[i] = other.arr[i];
         }
@@ -280,6 +288,7 @@ Array& Array::operator=(const Array& other) {
     if (this == &other) {
         return *this;
     }
+
     delete[] arr;
 
     max_size = other.max_size;
@@ -350,4 +359,118 @@ Array operator+(const Array& arr1, const Array& arr2) {
     result.curr_size = new_size;
 
     return result;
+}
+
+std::ostream& operator<<(std::ostream& os, const Array& arr) {
+
+    os << "[ ";
+
+    for (int i = 0; i < arr.getCurrentSize(); ++i) {
+        os << arr.get(i) << " ";
+    }
+
+    os << "]";
+
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Array& arr) {
+
+    int size;
+    std::cout << "Enter the number of elements: ";
+
+    is >> size;
+
+    for (int i = 0; i < size; ++i) {
+
+        int value;
+        std::cout << "Enter the element [" << i + 1 << "]: ";
+        is >> value;
+        arr.add(value);
+    }
+
+    return is;
+}
+
+void Array::writeToTextFile(const char* filename) const {
+
+    std::ofstream file(filename);
+
+    if (!file.is_open()) {
+        std::cout << "Error: Cannot open file for writing!" << std::endl;
+        return;
+    }
+
+    file << curr_size << '\n';
+
+    for (int i = 0; i < curr_size; ++i) {
+        file << arr[i] << ' ';
+    }
+
+    file << '\n';
+
+    file.close();
+}
+
+void Array::readFromTextFile(const char* filename) {
+
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cout << "Error: Cannot open file for reading!" << std::endl;
+        return;
+    }
+
+    file >> curr_size;
+
+    if (curr_size > max_size) {
+        delete[] arr;
+        max_size = curr_size;
+        arr = new int[max_size];
+    }
+
+    for (int i = 0; i < curr_size; ++i) {
+        file >> arr[i];
+    }
+
+    file.close();
+}
+
+void Array::writeToBinaryFile(const char* filename) const {
+
+    std::ofstream file(filename, std::ios::binary);
+
+    if (!file.is_open()) {
+        std::cout << "Error: Cannot open file for writing!" << std::endl;
+        return;
+    }
+
+    file.write(reinterpret_cast<const char*>(&curr_size), sizeof(curr_size));
+    file.write(reinterpret_cast<const char*>(arr), curr_size * sizeof(int));
+
+    file.close();
+}
+
+void Array::readFromBinaryFile(const char* filename) {
+
+    std::ifstream file(filename, std::ios::binary);
+
+    if (!file.is_open()) {
+        std::cout << "Error: Cannot open file for reading!" << std::endl;
+        return;
+    }
+
+    int new_size;
+    file.read(reinterpret_cast<char*>(&new_size), sizeof(new_size));
+
+    if (new_size > max_size) {
+        delete[] arr;
+        max_size = new_size;
+        arr = new int[max_size];
+    }
+
+    curr_size = new_size;
+    file.read(reinterpret_cast<char*>(arr), curr_size * sizeof(int));
+
+    file.close();
 }
