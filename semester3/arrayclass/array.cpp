@@ -363,10 +363,15 @@ Array operator+(const Array& arr1, const Array& arr2) {
 
 std::ostream& operator<<(std::ostream& os, const Array& arr) {
 
-    os << "[ ";
+    os << "[";
 
     for (int i = 0; i < arr.getCurrentSize(); ++i) {
-        os << arr.get(i) << " ";
+
+        os << arr.get(i);
+
+        if (i != arr.getCurrentSize() - 1) {
+            os << " ";
+        }
     }
 
     os << "]";
@@ -376,23 +381,35 @@ std::ostream& operator<<(std::ostream& os, const Array& arr) {
 
 std::istream& operator>>(std::istream& is, Array& arr) {
 
-    int size;
-    std::cout << "Enter the number of elements: ";
+    char bracket;
+    is >> bracket;
 
-    is >> size;
+    if (bracket != '[') {
+        throw std::runtime_error("Invalid format: expected '['");
+    }
 
-    for (int i = 0; i < size; ++i) {
+    arr = Array(arr.getMaxSize());
+    int value;
 
-        int value;
-        std::cout << "Enter the element [" << i + 1 << "]: ";
-        is >> value;
+    while (is >> value) {
+
         arr.add(value);
+        is.get(bracket);
+
+        if (bracket == ']') {
+            break;
+        }
+    }
+
+    if (bracket != ']') {
+        throw std::runtime_error("Invalid format: expected ']'");
     }
 
     return is;
 }
 
 void Array::writeToBinaryFile(std::ostream& out) const {
+
     if (!out.good()) {
         std::cout << "Error: Cannot write to stream!" << std::endl;
         return;
@@ -403,6 +420,7 @@ void Array::writeToBinaryFile(std::ostream& out) const {
 }
 
 void Array::readFromBinaryFile(std::istream& in) {
+
     if (!in.good()) {
         std::cout << "Error: Cannot read from stream!" << std::endl;
         return;

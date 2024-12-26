@@ -371,65 +371,57 @@ void testOperatorInputOutput() {
     arr.add(40);
     arr.add(50);
 
-    std::cout << "Original Array: " << arr << std::endl;
+    const char* filename = "test_array.txt";
 
-    const char* textFilename = "test_array.txt";
-    std::ofstream textFile(textFilename);
-    if (!textFile.is_open()) {
-        std::cout << "Error: Cannot open file for writing!" << std::endl;
-        return;
-    }
-    textFile << arr.getCurrentSize() << '\n';
-    for (int i = 0; i < arr.getCurrentSize(); ++i) {
-        textFile << arr.get(i) << ' ';
-    }
-    textFile << '\n';
-    textFile.close();
-
-    Array arrFromTextFile(5);
-    std::ifstream textFileIn(textFilename);
-    if (!textFileIn.is_open()) {
-        std::cout << "Error: Cannot open file for reading!" << std::endl;
-        return;
-    }
-    int size;
-    textFileIn >> size;
-    for (int i = 0; i < size; ++i) {
-        int value;
-        textFileIn >> value;
-        arrFromTextFile.add(value);
-    }
-    textFileIn.close();
-
-    std::cout << "Array loaded from text file: " << arrFromTextFile << std::endl;
-
-    if (arr.getCurrentSize() == arrFromTextFile.getCurrentSize()) {
-        bool isEqual = true;
-        for (int i = 0; i < arr.getCurrentSize(); ++i) {
-            if (arr.get(i) != arrFromTextFile.get(i)) {
-                isEqual = false;
-                break;
-            }
+    {
+        std::ofstream outFile(filename);
+        if (!outFile) {
+            std::cout << "Error: Cannot open file for writing!" << std::endl;
+            return;
         }
-        std::cout << (isEqual ? "Text file test OK!" : "Text file test failed!") << std::endl;
-    } else {
+        outFile << arr;
+    }
+
+    Array arrFromFile(5);
+
+    {
+        std::ifstream inFile(filename);
+        if (!inFile) {
+            std::cout << "Error: Cannot open file for reading!" << std::endl;
+            return;
+        }
+        inFile >> arrFromFile;
+    }
+
+    std::cout << "Original Array: " << arr << std::endl;
+    std::cout << "Array loaded from text file: " << arrFromFile << std::endl;
+
+    if (areEqual(arr, arrFromFile)) {
+        std::cout << "Text file test OK!" << std::endl;
+    }
+
+    else {
         std::cout << "Text file test failed!" << std::endl;
     }
 
     const char* binaryFilename = "test_array.dat";
     std::ofstream binaryOutFile(binaryFilename, std::ios::binary);
+
     if (!binaryOutFile) {
         std::cout << "Error: Cannot open binary file for writing!" << std::endl;
         return;
     }
+
     arr.writeToBinaryFile(binaryOutFile);
     binaryOutFile.close();
 
     std::ifstream binaryInFile(binaryFilename, std::ios::binary);
+
     if (!binaryInFile) {
         std::cout << "Error: Cannot open binary file for reading!" << std::endl;
         return;
     }
+
     Array arrFromBinaryFile(5);
     arrFromBinaryFile.readFromBinaryFile(binaryInFile);
     binaryInFile.close();
@@ -437,15 +429,20 @@ void testOperatorInputOutput() {
     std::cout << "Array loaded from binary file: " << arrFromBinaryFile << std::endl;
 
     if (arr.getCurrentSize() == arrFromBinaryFile.getCurrentSize()) {
+
         bool isEqual = true;
+
         for (int i = 0; i < arr.getCurrentSize(); ++i) {
+
             if (arr.get(i) != arrFromBinaryFile.get(i)) {
                 isEqual = false;
                 break;
             }
         }
         std::cout << (isEqual ? "Binary file test OK!" : "Binary file test failed!") << std::endl;
-    } else {
+    }
+
+    else {
         std::cout << "Binary file test failed!" << std::endl;
     }
 }
