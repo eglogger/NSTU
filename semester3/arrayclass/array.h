@@ -40,10 +40,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Array& array);
     friend std::istream& operator>>(std::istream& is, Array& array);
 
-    void writeToTextFile(const char *filename) const;
-    void readFromTextFile(const char *filename);
-    void writeToBinaryFile(const char *filename) const;
-    void readFromBinaryFile(const char *filename);
+    void writeToBinaryFile(std::ostream& out) const;
+    void readFromBinaryFile(std::istream& in);
 
 private:
 

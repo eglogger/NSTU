@@ -392,76 +392,24 @@ std::istream& operator>>(std::istream& is, Array& arr) {
     return is;
 }
 
-void Array::writeToTextFile(const char* filename) const {
-
-    std::ofstream file(filename);
-
-    if (!file.is_open()) {
-        std::cout << "Error: Cannot open file for writing!" << std::endl;
+void Array::writeToBinaryFile(std::ostream& out) const {
+    if (!out.good()) {
+        std::cout << "Error: Cannot write to stream!" << std::endl;
         return;
     }
 
-    file << curr_size << '\n';
-
-    for (int i = 0; i < curr_size; ++i) {
-        file << arr[i] << ' ';
-    }
-
-    file << '\n';
-
-    file.close();
+    out.write(reinterpret_cast<const char*>(&curr_size), sizeof(curr_size));
+    out.write(reinterpret_cast<const char*>(arr), curr_size * sizeof(int));
 }
 
-void Array::readFromTextFile(const char* filename) {
-
-    std::ifstream file(filename);
-
-    if (!file.is_open()) {
-        std::cout << "Error: Cannot open file for reading!" << std::endl;
-        return;
-    }
-
-    file >> curr_size;
-
-    if (curr_size > max_size) {
-        delete[] arr;
-        max_size = curr_size;
-        arr = new int[max_size];
-    }
-
-    for (int i = 0; i < curr_size; ++i) {
-        file >> arr[i];
-    }
-
-    file.close();
-}
-
-void Array::writeToBinaryFile(const char* filename) const {
-
-    std::ofstream file(filename, std::ios::binary);
-
-    if (!file.is_open()) {
-        std::cout << "Error: Cannot open file for writing!" << std::endl;
-        return;
-    }
-
-    file.write(reinterpret_cast<const char*>(&curr_size), sizeof(curr_size));
-    file.write(reinterpret_cast<const char*>(arr), curr_size * sizeof(int));
-
-    file.close();
-}
-
-void Array::readFromBinaryFile(const char* filename) {
-
-    std::ifstream file(filename, std::ios::binary);
-
-    if (!file.is_open()) {
-        std::cout << "Error: Cannot open file for reading!" << std::endl;
+void Array::readFromBinaryFile(std::istream& in) {
+    if (!in.good()) {
+        std::cout << "Error: Cannot read from stream!" << std::endl;
         return;
     }
 
     int new_size;
-    file.read(reinterpret_cast<char*>(&new_size), sizeof(new_size));
+    in.read(reinterpret_cast<char*>(&new_size), sizeof(new_size));
 
     if (new_size > max_size) {
         delete[] arr;
@@ -470,7 +418,5 @@ void Array::readFromBinaryFile(const char* filename) {
     }
 
     curr_size = new_size;
-    file.read(reinterpret_cast<char*>(arr), curr_size * sizeof(int));
-
-    file.close();
+    in.read(reinterpret_cast<char*>(arr), curr_size * sizeof(int));
 }
