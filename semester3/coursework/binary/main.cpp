@@ -9,12 +9,12 @@
 
 struct Record {
 
-    bool isDeleted = false;  // Mark if the record is deleted
-    std::string category;    // "Buy" or "Sell"
-    std::string rubric;      // "Transport", "Real Estate", etc.
-    std::string text;        // Ad text
-    std::string date;        // Date in YYYY-MM-DD format
-    std::string phone;       // Contact phone number
+    bool isDeleted = false;
+    std::string category;
+    std::string rubric;
+    std::string text;
+    std::string date;
+    std::string phone;
 };
 
 std::string normalizeDate(const std::string& inputDate) {
@@ -510,6 +510,7 @@ int main() {
     }
 
     int choice;
+
     do {
         displayMenu();
         std::cin >> choice;
@@ -530,7 +531,9 @@ int main() {
 
                 try {
                     record.date = normalizeDate(dateInput);
-                } catch (const std::invalid_argument& e) {
+                }
+
+                catch (const std::invalid_argument& e) {
                     std::cout << e.what() << std::endl;
                     continue;
                 }
@@ -540,10 +543,12 @@ int main() {
                 board.addRecord(record);
                 break;
             }
+
             case 2: {
                 board.viewByPages();
                 break;
             }
+
             case 3: {
                 size_t index;
                 std::cout << "Enter record number to delete: ";
@@ -552,6 +557,7 @@ int main() {
                 board.deleteRecord(index);
                 break;
             }
+
             case 4: {
                 std::string category;
                 std::cout << "Enter category to search: ";
@@ -559,6 +565,7 @@ int main() {
                 board.searchByCategory(category);
                 break;
             }
+
             case 5: {
                 std::string keyword;
                 std::cout << "Enter keyword to search: ";
@@ -566,21 +573,24 @@ int main() {
                 board.searchByKeyword(keyword);
                 break;
             }
+
             case 6: {
                 board.sortByDate();
                 break;
             }
+
             case 7: {
                 board.saveRecordsBinary("bulletin_board.dat");
-                std::cout << "Records saved to binary file.\n";
                 break;
             }
+
             case 8: {
                 checkFileSize("bulletin_board.dat");
                 board.compressFile("bulletin_board.dat");
                 checkFileSize("bulletin_board.dat");
                 break;
             }
+
             case 9: {
                 size_t index;
                 std::cout << "Enter record number to modify: ";
@@ -589,11 +599,13 @@ int main() {
                 board.modifyRecord(index);
                 break;
             }
-            default:
+
+            default: {
                 if (choice != 7) {
                     std::cout << "Invalid choice. Try again.\n";
                 }
                 break;
+            }
         }
     } while (choice != 7);
 
