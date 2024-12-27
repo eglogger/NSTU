@@ -17,7 +17,7 @@ void SmartArray::add(int elem) {
 int SmartArray::get(int index) const {
 
     if (index < 0 || index >= getCurrentSize()) {
-        throw std::out_of_range("Index out of range!");
+        throw std::out_of_range("Index is out of range!");
     }
 
     return Array::get(index);
@@ -26,7 +26,7 @@ int SmartArray::get(int index) const {
 void SmartArray::set(int index, int new_elem) {
 
     if (index < 0 || index >= getCurrentSize()) {
-        throw std::out_of_range("Index out of range!");
+        throw std::out_of_range("Index is out of range!");
     }
 
     Array::set(index, new_elem);

@@ -34,6 +34,4 @@ public:
 };
 
 
-
-
 #endif //ARRAYCLASS_LINKEDLIST_H

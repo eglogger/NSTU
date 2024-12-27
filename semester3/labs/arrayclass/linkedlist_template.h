@@ -85,7 +85,7 @@ void LinkedListTemplate<T>::insertAt(int index, const T& data) {
 
     for (int i = 0; i < index; ++i) {
         current = current->next;
-        if (current == head) throw std::out_of_range("Index out of range");
+        if (current == head) throw std::out_of_range("Index is out of range!");
     }
 
     NodeTemplate<T>* newNode = new NodeTemplate<T>(data);
@@ -106,7 +106,7 @@ void LinkedListTemplate<T>::removeAt(int index) {
 
     for (int i = 0; i < index; ++i) {
         current = current->next;
-        if (current == head) throw std::out_of_range("Index out of range");
+        if (current == head) throw std::out_of_range("Index is out of range!");
     }
 
     if (current->next == current) {

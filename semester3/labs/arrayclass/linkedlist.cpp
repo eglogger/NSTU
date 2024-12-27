@@ -7,8 +7,11 @@ Node::Node(Array* data) : data(data), next(nullptr), prev(nullptr) {}
 LinkedList::LinkedList() : head(nullptr) {}
 
 LinkedList::~LinkedList() {
+
     if (!head) return;
+
     Node* current = head;
+
     do {
         Node* temp = current;
         current = current->next;
@@ -18,12 +21,16 @@ LinkedList::~LinkedList() {
 }
 
 void LinkedList::add(Array* array) {
+
     Node* newNode = new Node(array);
+
     if (!head) {
         head = newNode;
         head->next = head;
         head->prev = head;
-    } else {
+    }
+
+    else {
         Node* tail = head->prev;
         tail->next = newNode;
         newNode->prev = tail;
@@ -33,24 +40,31 @@ void LinkedList::add(Array* array) {
 }
 
 void LinkedList::insertAt(int index, Array* array) {
+
     if (!head) {
+
         if (index == 0) {
             add(array);
-        } else {
-            throw std::out_of_range("Index out of range for empty list");
+        }
+
+        else {
+            throw std::out_of_range("Index is out of range for empty list!");
         }
         return;
     }
 
     if (index < 0) {
-        throw std::out_of_range("Index cannot be negative");
+        throw std::out_of_range("Index cannot be negative!");
     }
 
     Node* current = head;
+
     for (int i = 0; i < index; ++i) {
+
         current = current->next;
+
         if (current == head) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Index is out of range!");
         }
     }
 
@@ -66,13 +80,17 @@ void LinkedList::insertAt(int index, Array* array) {
 }
 
 void LinkedList::removeAt(int index) {
-    if (!head) throw std::out_of_range("List is empty");
+
+    if (!head) throw std::out_of_range("List is empty!");
 
     Node* current = head;
+
     for (int i = 0; i < index; ++i) {
+
         current = current->next;
+
         if (current == head) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Index is out of range!");
         }
     }
 
@@ -80,12 +98,17 @@ void LinkedList::removeAt(int index) {
         delete current->data;
         delete current;
         head = nullptr;
-    } else {
+    }
+
+    else {
+
         current->prev->next = current->next;
         current->next->prev = current->prev;
+
         if (current == head) {
             head = current->next;
         }
+
         delete current->data;
         delete current;
     }
@@ -96,6 +119,7 @@ Node* LinkedList::search(int value) {
     if (!head) return nullptr;
 
     Node* current = head;
+
     do {
         if (current->data->search(value) != -1) {
             return current;

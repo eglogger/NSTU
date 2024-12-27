@@ -35,3 +35,7 @@
 643	743	7570038404325590	arrayclass.exe	60d8cb356e49548e
 13	772	7570039395762687	CMakeFiles/arrayclass.dir/tests.cpp.obj	d46fb443a14ca493
 773	972	7570039403357866	arrayclass.exe	60d8cb356e49548e
+41	477	7570050763428371	CMakeFiles/arrayclass.dir/smartarray.cpp.obj	6d0ba003ed51eb2a
+46	499	7570050763474400	CMakeFiles/arrayclass.dir/linkedlist.cpp.obj	25c13b8db911b901
+36	656	7570050763378478	CMakeFiles/arrayclass.dir/tests.cpp.obj	d46fb443a14ca493
+656	925	7570050769583795	arrayclass.exe	60d8cb356e49548e

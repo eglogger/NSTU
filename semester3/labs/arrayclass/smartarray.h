@@ -5,7 +5,9 @@
 
 
 class SmartArray : public Array {
+
 public:
+
     SmartArray(int size);
     SmartArray(const SmartArray& other);
     void add(int elem) override;
