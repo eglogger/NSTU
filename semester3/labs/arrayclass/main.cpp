@@ -25,12 +25,23 @@ int main() {
     /*/ Lab3 /*/
     testOperatorInputOutput();
 
-    /*/ Lab4 /*/
+    /*/ Lab4 & Lab6 /*/
     testSmartArrayBoundsChecking();
     testSmartArrayResize();
     testQueueArrayEnqueueDequeue();
     testQueueArrayUnderflow();
     testQueueArrayCircularBehavior();
+
+    /*/ Lab5 /*/
+    testLinkedListAdd();
+    testLinkedListInsertAt();
+    testLinkedListRemoveAt();
+    testLinkedListSearch();
+    testLinkedListToString();
+    testLinkedListPolymorphism();
+
+    /*/ Lab7 /*/
+    testTemplate();
 
     return 0;
 }

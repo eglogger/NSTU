@@ -79,6 +79,12 @@ build CMakeFiles/arrayclass.dir/smartarray.cpp.obj: CXX_COMPILER__arrayclass_uns
   OBJECT_DIR = CMakeFiles\arrayclass.dir
   OBJECT_FILE_DIR = CMakeFiles\arrayclass.dir
 
+build CMakeFiles/arrayclass.dir/linkedlist.cpp.obj: CXX_COMPILER__arrayclass_unscanned_Debug C$:/Users/Michael/CLionProjects/arrayclass/linkedlist.cpp || cmake_object_order_depends_target_arrayclass
+  DEP_FILE = CMakeFiles\arrayclass.dir\linkedlist.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\arrayclass.dir
+  OBJECT_FILE_DIR = CMakeFiles\arrayclass.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target arrayclass
@@ -87,7 +93,7 @@ build CMakeFiles/arrayclass.dir/smartarray.cpp.obj: CXX_COMPILER__arrayclass_uns
 #############################################
 # Link the executable arrayclass.exe
 
-build arrayclass.exe: CXX_EXECUTABLE_LINKER__arrayclass_Debug CMakeFiles/arrayclass.dir/main.cpp.obj CMakeFiles/arrayclass.dir/array.cpp.obj CMakeFiles/arrayclass.dir/tests.cpp.obj CMakeFiles/arrayclass.dir/queuearray.cpp.obj CMakeFiles/arrayclass.dir/smartarray.cpp.obj
+build arrayclass.exe: CXX_EXECUTABLE_LINKER__arrayclass_Debug CMakeFiles/arrayclass.dir/main.cpp.obj CMakeFiles/arrayclass.dir/array.cpp.obj CMakeFiles/arrayclass.dir/tests.cpp.obj CMakeFiles/arrayclass.dir/queuearray.cpp.obj CMakeFiles/arrayclass.dir/smartarray.cpp.obj CMakeFiles/arrayclass.dir/linkedlist.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\arrayclass.dir

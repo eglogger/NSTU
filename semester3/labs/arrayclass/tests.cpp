@@ -5,6 +5,8 @@
 #include "array.h"
 #include "smartarray.h"
 #include "queuearray.h"
+#include "linkedlist.h"
+#include "linkedlist_template.h"
 
 
 void testAdd() {
@@ -458,20 +460,20 @@ void testSmartArrayBoundsChecking() {
     sa.add(30);
 
     if (sa.get(2) == 30) {
-        std::cout << "Valid index test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 
     else {
-        std::cout << "Valid index test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
 
     try {
         sa.get(5);
-        std::cout << "Bounds checking test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
 
     catch (const std::out_of_range& e) {
-        std::cout << "Bounds checking test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 }
 
@@ -485,11 +487,11 @@ void testSmartArrayResize() {
 
     try {
         sa.add(3);
-        std::cout << "Resize test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
 
     catch (const std::overflow_error& e) {
-        std::cout << "Resize test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 }
 
@@ -503,11 +505,11 @@ void testQueueArrayEnqueueDequeue() {
     qa.enqueue(30);
 
     if (qa.dequeue() == 10 && qa.dequeue() == 20 && qa.dequeue() == 30) {
-        std::cout << "Enqueue/dequeue test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 
     else {
-        std::cout << "Enqueue/dequeue test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
 }
 
@@ -518,11 +520,11 @@ void testQueueArrayUnderflow() {
 
     try {
         qa.dequeue();
-        std::cout << "Underflow test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
 
     catch (const std::underflow_error& e) {
-        std::cout << "Underflow test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 }
 
@@ -541,10 +543,245 @@ void testQueueArrayCircularBehavior() {
     snprintf(check, sizeof(check), "%s", qa.toString());
 
     if (strcmp(check, "2 3 4 ") == 0) {
-        std::cout << "Circular behavior test OK!" << std::endl;
+        std::cout << "Test OK!" << std::endl;
     }
 
     else {
-        std::cout << "Circular behavior test failed!" << std::endl;
+        std::cout << "Test failed!" << std::endl;
     }
+}
+
+void testLinkedListAdd() {
+
+    std::cout << "--- LinkedList add test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray = new SmartArray(5);
+    smartArray->add(10);
+    smartArray->add(20);
+
+    list.add(smartArray);
+
+    char* listStr = list.toString();
+
+    if (strcmp(listStr, "10 20 -> (back to head)") == 0) {
+        std::cout << "Test OK!\n";
+    }
+
+    else {
+        std::cout << "Test failed!\n";
+    }
+
+    delete[] listStr;
+}
+
+void testLinkedListInsertAt() {
+
+    std::cout << "--- LinkedList insertAt test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray1 = new SmartArray(5);
+    smartArray1->add(10);
+    list.add(smartArray1);
+
+    SmartArray* smartArray2 = new SmartArray(5);
+    smartArray2->add(20);
+    list.insertAt(0, smartArray2);
+
+    char* listStr = list.toString();
+
+    if (strcmp(listStr, "20 -> 10 -> (back to head)") == 0) {
+        std::cout << "Test OK!\n";
+    }
+
+    else {
+        std::cout << "Test failed!\n";
+    }
+
+    delete[] listStr;
+}
+
+void testLinkedListRemoveAt() {
+
+    std::cout << "--- LinkedList removeAt test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray1 = new SmartArray(5);
+    smartArray1->add(10);
+    list.add(smartArray1);
+
+    SmartArray* smartArray2 = new SmartArray(5);
+    smartArray2->add(20);
+    list.add(smartArray2);
+
+    list.removeAt(0);
+
+    char* listStr = list.toString();
+
+    if (strcmp(listStr, "20 -> (back to head)") == 0) {
+        std::cout << "Test OK!\n";
+    }
+
+    else {
+        std::cout << "Test failed!\n";
+    }
+
+    delete[] listStr;
+}
+
+void testLinkedListSearch() {
+
+    std::cout << "--- LinkedList search test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray1 = new SmartArray(5);
+    smartArray1->add(10);
+    list.add(smartArray1);
+
+    SmartArray* smartArray2 = new SmartArray(5);
+    smartArray2->add(20);
+    list.add(smartArray2);
+
+    Node* found = list.search(10);
+
+    if (found != nullptr && found->data->get(0) == 10) {
+        std::cout << "Test 1 OK!\n";
+    }
+
+    else {
+        std::cout << "Test 1 failed!\n";
+    }
+
+    found = list.search(30);
+
+    if (found == nullptr) {
+        std::cout << "Test 2 OK!\n";
+    }
+
+    else {
+        std::cout << "Test 2 failed!\n";
+    }
+}
+
+void testLinkedListToString() {
+
+    std::cout << "--- LinkedList toString test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray1 = new SmartArray(5);
+    smartArray1->add(10);
+    smartArray1->add(20);
+    list.add(smartArray1);
+
+    char* listStr = list.toString();
+
+    if (strcmp(listStr, "10 20 -> (back to head)") == 0) {
+        std::cout << "Test OK!\n";
+    }
+
+    else {
+        std::cout << "Test failed!\n";
+    }
+
+    delete[] listStr;
+}
+
+void testLinkedListPolymorphism() {
+
+    std::cout << "--- LinkedList polymorphism test ---\n";
+    LinkedList list;
+
+    SmartArray* smartArray = new SmartArray(5);
+    smartArray->add(1);
+    smartArray->add(2);
+    list.add(smartArray);
+
+    QueueArray* queueArray = new QueueArray(5);
+    queueArray->enqueue(10);
+    queueArray->enqueue(20);
+    list.add(queueArray);
+
+    char* listStr = list.toString();
+
+    if (strcmp(listStr, "1 2 -> 10 20 -> (back to head)") == 0) {
+        std::cout << "Test OK!\n";
+    }
+
+    else {
+        std::cout << "Test failed!\n";
+    }
+
+    delete[] listStr;
+}
+
+void testTemplate() {
+
+    std::cout << "--- LinkedListTemplate test ---\n";
+
+    LinkedListTemplate<int> intList;
+    intList.add(10);
+    intList.add(20);
+    intList.add(30);
+    intList.insertAt(1, 15);
+    intList.removeAt(2);
+
+    char* intListStr = intList.toString();
+
+    if (strcmp(intListStr, "10 -> 15 -> 30 -> (back to head)") == 0) {
+        std::cout << "Test 1 OK!\n";
+    }
+
+    else {
+        std::cout << "Test 1 failed!\n";
+    }
+
+    delete[] intListStr;
+
+    LinkedListTemplate<float> floatList;
+    floatList.add(10.5f);
+    floatList.add(20.75f);
+    floatList.add(30.25f);
+    floatList.insertAt(0, 5.0f);
+    floatList.removeAt(1);
+
+    char* floatListStr = floatList.toString();
+
+    if (strcmp(floatListStr, "5 -> 20.75 -> 30.25 -> (back to head)") == 0) {
+        std::cout << "Test 2 OK!\n";
+    }
+
+    else {
+        std::cout << "Test 2 failed!\n";
+    }
+
+    delete[] floatListStr;
+
+    LinkedListTemplate<Array> arrayList;
+    Array arr1(3);
+    arr1.add(1);
+    arr1.add(2);
+    arr1.add(3);
+    arrayList.add(arr1);
+
+    Array arr2(2);
+    arr2.add(4);
+    arr2.add(5);
+    arrayList.add(arr2);
+
+    Array arr3(1);
+    arr3.add(9);
+    arrayList.insertAt(1, arr3);
+    arrayList.removeAt(0);
+
+    char* arrayListStr = arrayList.toString();
+
+    if (strcmp(arrayListStr, "[9] -> [4 5] -> (back to head)") == 0) {
+        std::cout << "Test 3 OK!\n";
+    }
+
+    else {
+        std::cout << "Test 3 failed!\n";
+    }
+
+    delete[] arrayListStr;
 }

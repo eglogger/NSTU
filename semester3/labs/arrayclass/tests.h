@@ -27,5 +27,14 @@ void testQueueArrayEnqueueDequeue();
 void testQueueArrayUnderflow();
 void testQueueArrayCircularBehavior();
 
+void testLinkedListAdd();
+void testLinkedListInsertAt();
+void testLinkedListRemoveAt();
+void testLinkedListSearch();
+void testLinkedListToString();
+void testLinkedListPolymorphism();
+
+void testTemplate();
+
 
 #endif //ARRAYCLASS_TESTS_H

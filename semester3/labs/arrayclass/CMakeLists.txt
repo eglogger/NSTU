@@ -11,4 +11,7 @@ add_executable(arrayclass main.cpp
         queuearray.cpp
         queuearray.h
         smartarray.cpp
-        smartarray.h)
+        smartarray.h
+        linkedlist.cpp
+        linkedlist.h
+        linkedlist_template.h)
