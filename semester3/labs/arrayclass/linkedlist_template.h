@@ -37,7 +37,7 @@ public:
     char* toString() const;
 };
 
-template <typename T>
+template <class T>
 LinkedListTemplate<T>::~LinkedListTemplate() {
 
     if (!head) return;
@@ -51,7 +51,7 @@ LinkedListTemplate<T>::~LinkedListTemplate() {
     } while (current != head);
 }
 
-template <typename T>
+template <class T>
 void LinkedListTemplate<T>::add(const T& data) {
 
     NodeTemplate<T>* newNode = new NodeTemplate<T>(data);
@@ -71,7 +71,7 @@ void LinkedListTemplate<T>::add(const T& data) {
     }
 }
 
-template <typename T>
+template <class T>
 void LinkedListTemplate<T>::insertAt(int index, const T& data) {
 
     if (index < 0) throw std::out_of_range("Index cannot be negative");
@@ -97,7 +97,7 @@ void LinkedListTemplate<T>::insertAt(int index, const T& data) {
     if (index == 0) head = newNode;
 }
 
-template <typename T>
+template <class T>
 void LinkedListTemplate<T>::removeAt(int index) {
 
     if (!head) throw std::out_of_range("List is empty");
@@ -122,22 +122,22 @@ void LinkedListTemplate<T>::removeAt(int index) {
     }
 }
 
-template <typename T>
-NodeTemplate<T>* LinkedListTemplate<T>::search(const T& value) {
+template <>
+NodeTemplate<Array>* LinkedListTemplate<Array>::search(const Array& value) {
 
     if (!head) return nullptr;
 
-    NodeTemplate<T>* current = head;
+    NodeTemplate<Array>* current = head;
 
     do {
-        if (current->data == value) return current;
+        if (areEqual(current->data, value)) return current;
         current = current->next;
     } while (current != head);
 
     return nullptr;
 }
 
-template <typename T>
+template <class T>
 char* LinkedListTemplate<T>::toString() const {
 
     if (!head) {
@@ -146,19 +146,20 @@ char* LinkedListTemplate<T>::toString() const {
         return emptyMessage;
     }
 
-    std::ostringstream oss;
+    std::stringstream ss;
     NodeTemplate<T>* current = head;
 
     do {
-        oss << current->data << " -> ";
+        ss << current->data << " -> ";
         current = current->next;
     } while (current != head);
 
-    oss << "(back to head)";
-    std::string result = oss.str();
+    ss << "(back to head)";
 
-    char* output = new char[result.size() + 1];
-    std::strcpy(output, result.c_str());
+    std::string temp = ss.str();
+    char* output = new char[temp.size() + 1];
+    std::strcpy(output, temp.c_str());
+
     return output;
 }
 

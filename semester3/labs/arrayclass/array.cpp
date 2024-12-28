@@ -408,10 +408,10 @@ std::istream& operator>>(std::istream& is, Array& arr) {
     return is;
 }
 
-void Array::writeToBinaryFile(std::ostream& out) const {
+void Array::writeToBinaryFile(std::ofstream& out) const {
 
-    if (!out.good()) {
-        std::cout << "Error: Cannot write to stream!" << std::endl;
+    if (!out.is_open()) {
+        std::cerr << "Error: Output stream is not open!" << std::endl;
         return;
     }
 
@@ -419,22 +419,20 @@ void Array::writeToBinaryFile(std::ostream& out) const {
     out.write(reinterpret_cast<const char*>(arr), curr_size * sizeof(int));
 }
 
-void Array::readFromBinaryFile(std::istream& in) {
+void Array::readFromBinaryFile(std::ifstream& in) {
 
-    if (!in.good()) {
-        std::cout << "Error: Cannot read from stream!" << std::endl;
+    if (!in.is_open()) {
+        std::cerr << "Error: Input stream is not open!" << std::endl;
         return;
     }
 
-    int new_size;
-    in.read(reinterpret_cast<char*>(&new_size), sizeof(new_size));
+    in.read(reinterpret_cast<char*>(&curr_size), sizeof(curr_size));
 
-    if (new_size > max_size) {
+    if (curr_size > max_size) {
         delete[] arr;
-        max_size = new_size;
+        max_size = curr_size;
         arr = new int[max_size];
     }
 
-    curr_size = new_size;
     in.read(reinterpret_cast<char*>(arr), curr_size * sizeof(int));
 }

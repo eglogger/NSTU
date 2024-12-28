@@ -1,6 +1,7 @@
 #include "linkedlist.h"
 #include <iostream>
 #include <cstring>
+#include <sstream>
 
 Node::Node(Array* data) : data(data), next(nullptr), prev(nullptr) {}
 
@@ -138,20 +139,21 @@ char* LinkedList::toString() {
         return emptyMessage;
     }
 
-    std::string result;
+    std::stringstream ss;
     Node* current = head;
 
     do {
         char* arrayStr = current->data->toString();
-        result += arrayStr;
-        result += "-> ";
+        ss << arrayStr << "-> ";
         delete[] arrayStr;
         current = current->next;
     } while (current != head);
 
-    result += "(back to head)";
+    ss << "(back to head)";
 
-    char* output = new char[result.size() + 1];
-    strcpy(output, result.c_str());
-    return output;
+    std::string temp = ss.str();
+    char* result = new char[temp.size() + 1];
+    strcpy(result, temp.c_str());
+
+    return result;
 }

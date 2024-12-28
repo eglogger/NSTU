@@ -556,7 +556,7 @@ void testLinkedListAdd() {
     std::cout << "--- LinkedList add test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray = new SmartArray(5);
+    Array* smartArray = new SmartArray(5);
     smartArray->add(10);
     smartArray->add(20);
 
@@ -580,11 +580,11 @@ void testLinkedListInsertAt() {
     std::cout << "--- LinkedList insertAt test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray1 = new SmartArray(5);
+    Array* smartArray1 = new SmartArray(5);
     smartArray1->add(10);
     list.add(smartArray1);
 
-    SmartArray* smartArray2 = new SmartArray(5);
+    Array* smartArray2 = new SmartArray(5);
     smartArray2->add(20);
     list.insertAt(0, smartArray2);
 
@@ -606,11 +606,11 @@ void testLinkedListRemoveAt() {
     std::cout << "--- LinkedList removeAt test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray1 = new SmartArray(5);
+    Array* smartArray1 = new SmartArray(5);
     smartArray1->add(10);
     list.add(smartArray1);
 
-    SmartArray* smartArray2 = new SmartArray(5);
+    Array* smartArray2 = new SmartArray(5);
     smartArray2->add(20);
     list.add(smartArray2);
 
@@ -634,11 +634,11 @@ void testLinkedListSearch() {
     std::cout << "--- LinkedList search test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray1 = new SmartArray(5);
+    Array* smartArray1 = new SmartArray(5);
     smartArray1->add(10);
     list.add(smartArray1);
 
-    SmartArray* smartArray2 = new SmartArray(5);
+    Array* smartArray2 = new SmartArray(5);
     smartArray2->add(20);
     list.add(smartArray2);
 
@@ -668,7 +668,7 @@ void testLinkedListToString() {
     std::cout << "--- LinkedList toString test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray1 = new SmartArray(5);
+    Array* smartArray1 = new SmartArray(5);
     smartArray1->add(10);
     smartArray1->add(20);
     list.add(smartArray1);
@@ -691,7 +691,7 @@ void testLinkedListPolymorphism() {
     std::cout << "--- LinkedList polymorphism test ---\n";
     LinkedList list;
 
-    SmartArray* smartArray = new SmartArray(5);
+    Array* smartArray = new SmartArray(5);
     smartArray->add(1);
     smartArray->add(2);
     list.add(smartArray);
