@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        com.example.simulator.Habitat habitat = new com.example.simulator.Habitat(primaryStage);
+        Habitat habitat = Habitat.getInstance(primaryStage);
         primaryStage.setTitle("Simulation");
         primaryStage.show();
     }
