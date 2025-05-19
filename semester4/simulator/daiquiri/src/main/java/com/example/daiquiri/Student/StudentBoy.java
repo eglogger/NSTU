@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StudentBoy extends Student implements IBehaviour {
     transient private static Image boyImage;
@@ -20,11 +22,10 @@ public class StudentBoy extends Student implements IBehaviour {
         this.imgWidth = imgWidth;
         this.imgHeight = imgHeight;
         if (boyImage == null) { // Проверяем, было ли изображение уже загружено
-            InputStream inputStream = getClass().getResourceAsStream("/com/example/simulator/boy.png");
-            if (inputStream != null) {
-                boyImage = new Image(inputStream);
-            } else {
-                System.err.println("Не удалось загрузить изображение");
+            try {
+                boyImage = new Image(new FileInputStream("src/main/resources/com/example/daiquiri/boy.png"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
         imageView = new ImageView(boyImage); // Используем статическое изображение

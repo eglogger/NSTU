@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StudentGirl extends Student implements IBehaviour {
     transient private static Image girlImage; // Статическая переменная для хранения изображения
@@ -17,15 +18,14 @@ public class StudentGirl extends Student implements IBehaviour {
         super();
         this.imgWidth = imgWidth;
         this.imgHeight = imgHeight;
-        if (girlImage == null) {
-            InputStream inputStream = getClass().getResourceAsStream("/com/example/simulator/girl.png");
-            if (inputStream != null) {
-                girlImage = new Image(inputStream);
-            } else {
-                System.err.println("Не удалось загрузить изображение");
+        if (girlImage == null) { // Проверяем, было ли изображение уже загружено
+            try {
+                girlImage = new Image(new FileInputStream("src/main/resources/com/example/daiquiri/girl.png"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
-        imageView = new ImageView(girlImage);
+        imageView = new ImageView(girlImage); // Используем статическое изображение
         imageView.setFitWidth(imgWidth);
         imageView.setFitHeight(imgHeight);
 /*        double maxX = simulationPane.getWidth() - imgWidth;

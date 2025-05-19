@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Student implements Serializable {
     private static final Set<Integer> generatedIds = new HashSet<>();
@@ -16,11 +17,12 @@ public abstract class Student implements Serializable {
     private static final long serialVersionUID = 1L;
     private int id;
     private double angle;
-    transient private DoubleProperty coordX = new SimpleDoubleProperty();
-    transient private DoubleProperty coordY = new SimpleDoubleProperty();
+    private final DoubleProperty coordX = new SimpleDoubleProperty();
+    private final DoubleProperty coordY = new SimpleDoubleProperty();
     protected int imgWidth;
     protected int imgHeight;
     transient protected Pane simulationPane;
+
     transient protected ImageView imageView;
     public Student() {
         generateUniqueId();
@@ -75,19 +77,16 @@ public abstract class Student implements Serializable {
     }
     @Serial
     private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeDouble(coordX.getValue());
+        out.defaultWriteObject(); // Сначала выполняем обычную сериализацию
+        out.writeDouble(coordX.getValue()); // Затем записываем координаты
         out.writeDouble(coordY.getValue());
         out.writeInt(id);
     }
     @Serial
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        double x = in.readDouble();
-        double y = in.readDouble();
-        this.coordX = new SimpleDoubleProperty(x);
-        this.coordY = new SimpleDoubleProperty(y);
-        this.id = in.readInt();
+        coordX.set(in.readDouble());
+        coordY.set(in.readDouble());
+        id = in.readInt();
     }
-
 }

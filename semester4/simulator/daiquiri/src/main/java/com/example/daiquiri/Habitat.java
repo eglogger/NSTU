@@ -12,11 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 
-import java.io.*;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -38,8 +38,6 @@ public class Habitat {
     private int girlSpawnDelay = 5;
     private double boyProbability = 1;
     private double girlProbability = 1;
-    private int boyAIPriority = 5;
-    private int girlAIPriority = 5;
     private long lastBoySpawnTime = 0;
     private long lastGirlSpawnTime = 0;
     private int boyCount = 0;
@@ -65,7 +63,7 @@ public class Habitat {
         this.students = new ArrayList<>();
         this.timeLabel = timeLabel;
         this.showInfoCheckBox = showInfoCheckBox;
-        this.simulationStartTime = Instant.now();
+
     }
     public void startSimulation() {
         if (!isSimulationRunning) {
@@ -79,8 +77,8 @@ public class Habitat {
                 public void run() {
                     if (isSimulationRunning) {
                         long elapsedSeconds = Duration.between(simulationStartTime, Instant.now()).getSeconds();
-                        final boolean[] generateBoy = {false};
-                        final boolean[] generateGirl = {false};
+                        final boolean[] generateBoy = {false}; // Объявление массива для хранения флага
+                        final boolean[] generateGirl = {false}; // Объявление массива для хранения флага
 
                         if (elapsedSeconds - lastBoySpawnTime >= boySpawnDelay) {
                             if (Math.random() < boyProbability) {
@@ -129,10 +127,8 @@ public class Habitat {
         return isSimulationRunning;
     }
     public void clearSimulationResult() {
-        if (simulationTimer != null) {
-            simulationTimer.cancel();
-            simulationTimer = null;
-        }
+        simulationTimer.cancel();
+        simulationTimer = null;
         boyCount = 0;
         girlCount = 0;
         Iterator<Student> iterator = students.iterator();
@@ -148,7 +144,7 @@ public class Habitat {
         }
         timeLabel.setText("00:00");
     }
-    public void pauseSimulation(){
+        public void pauseSimulation(){
         simulationPauseTime = Instant.now();
         isSimulationRunning = false;
     }
@@ -156,7 +152,7 @@ public class Habitat {
         simulationStartTime = simulationStartTime.plus(Duration.between(simulationPauseTime, Instant.now()));
         isSimulationRunning = true;
     }
-    private void updateTimer() {
+    private void updateTimer() {  //Обновление времени
         if (isSimulationRunning) {
             Duration duration = Duration.between(simulationStartTime, Instant.now());
             long seconds = duration.getSeconds();
@@ -169,58 +165,29 @@ public class Habitat {
     public void setBoySpawnDelay(int delay) {
         this.boySpawnDelay = delay;
     }
-    public int getBoySpawnDelay() {
-        return boySpawnDelay;
-    }
     public void setGirlSpawnDelay(int delay) {
         this.girlSpawnDelay = delay;
-    }
-    public int getGirlSpawnDelay() {
-        return girlSpawnDelay;
     }
     public void setBoyLifeTime(int lifeTime) {
         this.boyLifeTime = lifeTime;
     }
-    public int getBoyLifeTime() {
-        return boyLifeTime;
-    }
     public void setGirlLifeTime(int lifeTime) {
         this.girlLifeTime = lifeTime;
-    }
-    public int getGirlLifeTime() {
-        return girlLifeTime;
     }
     public void setBoyProbability(double probability) {
         this.boyProbability = probability;
     }
-    public double getBoyProbability() {
-        return boyProbability;
-    }
     public void setGirlProbability(double probability) {
         this.girlProbability = probability;
     }
-    public double getGirlProbability() {
-        return girlProbability;
-    }
-    public void setBoyAIPriority(int priority) {
-        this.boyAIPriority = priority;
-    }
-    public int getBoyAIPriority() {
-        return boyAIPriority;
-    }
-    public void setGirlAIPriority(int priority) {
-        this.girlAIPriority = priority;
-    }
-    public int getGirlAIPriority() {
-        return girlAIPriority;
-    }
     public boolean showAlertWithSimulationInfo() {
         pauseSimulation();
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("habitat-info.fxml"));
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Simulation Info");
+            stage.setTitle("Информация о симуляции");
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
 
@@ -241,26 +208,30 @@ public class Habitat {
             return false;
         }
     }
-    public void openConsole(Controller controller) {
+    public void openConsole() {
         if (!isConsoleOpen) {
             try {
+                // Загрузка FXML и получение корневого элемента
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("habitat-console.fxml"));
                 Parent root = loader.load();
-                HabitatConsoleController consoleController = loader.getController();
-                consoleController.setController(controller);
+
+                // Создание новой сцены и установка корневого элемента
                 Scene scene = new Scene(root);
 
+                // Создание нового окна и установка сцены
                 Stage stage = new Stage();
                 stage.setTitle("Console");
                 stage.setScene(scene);
-                stage.setResizable(false);
 
+                // Установка модальности и владельца для окна
                 stage.initModality(Modality.NONE);
                 stage.initOwner(simulationPane.getScene().getWindow());
 
+                // Показать окно и установить флаг isConsoleOpen в true
                 stage.show();
                 isConsoleOpen = true;
 
+                // Обработчик закрытия окна
                 stage.setOnCloseRequest(event -> isConsoleOpen = false);
 
             } catch (IOException e) {
@@ -270,10 +241,9 @@ public class Habitat {
     }
     public void showCurrentObjectsDialog(Stage primaryStage) {
         if(isSimulationRunning) {
-            updateTimer();
             pauseSimulation();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Current Objects");
+            alert.setTitle("Текущие объекты");
             alert.setHeaderText(null);
 
             TextArea textArea = new TextArea();
@@ -281,9 +251,9 @@ public class Habitat {
             textArea.setWrapText(true);
 
             StringBuilder message = new StringBuilder();
-            message.append("List of current objects:\n");
+            message.append("Список текущих объектов с временем их рождения:\n");
             birthTimeMap.forEach((objectId, birthTime) -> {
-                message.append("ID: ").append(objectId).append(", Birth time: ").append(birthTime).append("\n");
+                message.append("ID: ").append(objectId).append(", Время рождения: ").append(birthTime).append("\n");
             });
             textArea.setText(message.toString());
 
@@ -312,7 +282,7 @@ public class Habitat {
         simulationDuration = Duration.between(simulationStartTime, Instant.now());
         return simulationDuration.getSeconds();
     }
-    public void generateStudentBoy() {
+    public void generateStudentBoy() {  //Создания студента
         StudentBoy studentBoy = new StudentBoy(simulationPane, imgWidth, imgHeight);
         setRandCoords(studentBoy);
         addStudentToScene(studentBoy);
@@ -322,7 +292,7 @@ public class Habitat {
         students.add(studentBoy);
         birthTimeMap.put(studentBoy.getId(), getSimulationDuration());
     }
-    public void generateStudentGirl() {
+    public void generateStudentGirl() {  //Создания студентки
         StudentGirl studentGirl = new StudentGirl(simulationPane, imgWidth, imgHeight);
         setRandCoords(studentGirl);
         addStudentToScene(studentGirl);
@@ -341,6 +311,7 @@ public class Habitat {
             long birthTime = birthTimeMap.get(student.getId());
             long elapsedTime = currentSimulationTime - birthTime;
 
+            // Изменение условия на проверку времени жизни студента
             if ((student instanceof StudentBoy && elapsedTime >= boyLifeTime) ||
                     (student instanceof StudentGirl && elapsedTime >= girlLifeTime)) {
                 simulationPane.getChildren().remove(student.getImageView());
@@ -357,10 +328,10 @@ public class Habitat {
         isBoyAIRunning = true;
         if (boyAI == null || !boyAI.isAlive()) {
             boyAI = new BoyAI(changeDirectionTime, movementSpeed, studentList, simulationPane);
-            boyAI.setPriority(boyAIPriority);
+            //boyAI.setPriority(boyAIPriority);
             boyAI.start();
         } else {
-            boyAI.setPriority(boyAIPriority);
+            //boyAI.setPriority(boyAIPriority);
             boyAI.resumeAI();
         }
     }
@@ -369,24 +340,24 @@ public class Habitat {
         isGirlAIRunning = true;
         if (girlAI == null || !girlAI.isAlive()) {
             girlAI = new GirlAI(radius, movementSpeed, studentList, simulationPane);
-            girlAI.setPriority(girlAIPriority);
             girlAI.start();
+            //girlAI.setPriority(girlAIPriority);
         } else {
-            girlAI.setPriority(girlAIPriority);
             girlAI.resumeAI();
+            //girlAI.setPriority(girlAIPriority);
         }
     }
 
     public void stopBoyAI() {
         isBoyAIRunning = false;
-        if (boyAI != null) {
+        if (boyAI != null) { // Проверяем, что объект girlAI не равен null
             boyAI.stopAI();
         }
     }
 
     public void stopGirlAI() {
         isGirlAIRunning = false;
-        if (girlAI != null) {
+        if (girlAI != null) { // Проверяем, что объект girlAI не равен null
             girlAI.stopAI();
         }
     }
@@ -401,155 +372,6 @@ public class Habitat {
             instance = new Habitat(simulationPane, timeLabel, showInfoCheckBox);
         }
         return instance;
-    }
-    private String chooseFile() {
-        stopSimulation();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a file");
-
-        Stage stage = (Stage) simulationPane.getScene().getWindow();
-        java.io.File file = fileChooser.showOpenDialog(stage);
-
-        return file != null ? file.getAbsolutePath() : null;
-    }
-    private String chooseSaveFile() {
-        pauseSimulation();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a save file");
-
-        Stage stage = (Stage) simulationPane.getScene().getWindow();
-        java.io.File file = fileChooser.showSaveDialog(stage);
-        resumeSimulation();
-
-        return file != null ? file.getAbsolutePath() : null;
-    }
-    public void saveToFile() {
-        String fileName = chooseSaveFile();
-        if (fileName != null) {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-                oos.writeObject(studentList);
-                oos.writeObject(birthTimeMap);
-                oos.writeObject(generatedIds);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void loadFromFile() {
-        if(isSimulationRunning){
-            stopSimulation();
-        }
-        String fileName = chooseFile();
-        if (fileName != null) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-                List<Student> loadedStudents = (List<Student>) ois.readObject();
-                Map<Integer, Long> loadedBirthTimeMap = (Map<Integer, Long>) ois.readObject();
-                Set<Integer> loadedGeneratedIds = (Set<Integer>) ois.readObject();
-
-                for (Student student : loadedStudents) {
-                    if (student instanceof StudentBoy) {
-                        StudentBoy studentBoy = new StudentBoy(simulationPane, imgWidth, imgHeight);
-                        studentBoy.moveTo(student.getCoordX(), student.getCoordY());
-                        studentBoy.setId(student.getId());
-                        ImageView imageView = studentBoy.getImageView();
-                        simulationPane.getChildren().add(imageView);
-                        students.add(studentBoy);
-                        generatedIds.add(studentBoy.getId());
-                        studentList.add(studentBoy);
-                        birthTimeMap.put(studentBoy.getId(), 0L);
-                    } else if (student instanceof StudentGirl) {
-                        StudentGirl studentGirl = new StudentGirl(simulationPane, imgWidth, imgHeight);
-                        studentGirl.moveTo(student.getCoordX(), student.getCoordY());
-                        studentGirl.setId(student.getId());
-                        ImageView imageView = studentGirl.getImageView();
-                        simulationPane.getChildren().add(imageView);
-                        students.add(studentGirl);
-                        generatedIds.add(studentGirl.getId());
-                        studentList.add(studentGirl);
-                        birthTimeMap.put(studentGirl.getId(), 0L);
-
-                    }
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void saveSettings() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("settings.txt"))) {
-            writer.println("boySpawnDelay = " + boySpawnDelay);
-            writer.println("girlSpawnDelay = " + girlSpawnDelay);
-            writer.println("boyLifeTime = " + boyLifeTime);
-            writer.println("girlLifeTime = " + girlLifeTime);
-            writer.println("boyProbability = " + boyProbability);
-            writer.println("girlProbability = " + girlProbability);
-            writer.println("boyAIPriority = " + boyAIPriority);
-            writer.println("girlAIPriority = " + girlAIPriority);
-            writer.println("isTimerVisible = " + timeLabel.isVisible());
-            writer.println("showInfoCheckbox = " + showInfoCheckBox.isSelected());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void loadSettings() {
-        File file = new File("settings.txt");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("=");
-                if (parts.length == 2) {
-                    String key = parts[0].trim();
-                    String value = parts[1].trim();
-                    switch (key) {
-                        case "boySpawnDelay":
-                            boySpawnDelay = Integer.parseInt(value);
-                            break;
-                        case "girlSpawnDelay":
-                            girlSpawnDelay = Integer.parseInt(value);
-                            break;
-                        case "boyLifeTime":
-                            boyLifeTime = Integer.parseInt(value);
-                            break;
-                        case "girlLifeTime":
-                            girlLifeTime = Integer.parseInt(value);
-                            break;
-                        case "boyProbability":
-                            boyProbability = Double.parseDouble(value);
-                            break;
-                        case "girlProbability":
-                            girlProbability = Double.parseDouble(value);
-                            break;
-                        case "boyAIPriority":
-                            boyAIPriority = Integer.parseInt(value);
-                            break;
-                        case "girlAIPriority":
-                            girlAIPriority = Integer.parseInt(value);
-                            break;
-                        case "isTimerVisible":
-                            isTimerVisible = Boolean.parseBoolean(value);
-                            break;
-                        case "showInfoCheckbox":
-                            showInfoCheckBox.setSelected(Boolean.parseBoolean(value));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public boolean isHabitatTimerVisible(){
-        return isTimerVisible;
     }
 }
 
