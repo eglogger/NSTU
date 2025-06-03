@@ -2,7 +2,7 @@
   <artifact type="jar" name="daiquiri:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/daiquiri_jar</output-path>
     <root id="archive" name="daiquiri.jar">
-      <element id="module-output" name="Lab_5" />
+      <element id="module-output" name="simulator" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/21/javafx-base-21-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21/javafx-graphics-21-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar" path-in-jar="/" />

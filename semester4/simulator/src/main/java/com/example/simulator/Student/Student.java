@@ -30,7 +30,7 @@ public abstract class Student implements Serializable {
 
     private void generateUniqueId() {
         do {
-            id = new Random().nextInt(1000); // Генерация случайного числа
+            id = new Random().nextInt(1000);
         } while (generatedIds.contains(this.id));
         generatedIds.add(this.id);
     }

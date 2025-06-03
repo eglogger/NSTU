@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import java.io.*;
 
 public class StudentGirl extends Student implements IBehaviour {
-    transient private static Image girlImage; // Статическая переменная для хранения изображения
+    transient private static Image girlImage;
     private long birthTime;
     public double centerX;
     public double centerY;
@@ -22,18 +22,12 @@ public class StudentGirl extends Student implements IBehaviour {
             if (inputStream != null) {
                 girlImage = new Image(inputStream);
             } else {
-                System.err.println("Не удалось загрузить изображение");
+                System.err.println("Error loading girl picture.");
             }
         }
         imageView = new ImageView(girlImage);
         imageView.setFitWidth(imgWidth);
         imageView.setFitHeight(imgHeight);
-/*        double maxX = simulationPane.getWidth() - imgWidth;
-        double maxY = simulationPane.getHeight() - imgHeight;
-        coordX = ThreadLocalRandom.current().nextDouble(0, maxX);
-        coordY = ThreadLocalRandom.current().nextDouble(0, maxY);
-        imageView.setX(coordX);
-        imageView.setY(coordY);*/
     }
 }
 

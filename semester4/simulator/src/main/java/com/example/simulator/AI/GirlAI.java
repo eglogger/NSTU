@@ -37,7 +37,7 @@ public class GirlAI extends BaseAI {
         while (isRunning) {
             move();
             try {
-                Thread.sleep(100); // Пауза между шагами
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
